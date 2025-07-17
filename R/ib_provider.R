@@ -116,8 +116,8 @@ fetch_ohlcv.IBProvider <- function(
 
       # Convert to data.table
       dt <- data.table::as.data.table(data, keep.rownames = "date")
-      dt[, date := as.Date(date)]
-      dt[, symbol := symbol] # Use original IB symbol
+      dt[, "date" := as.Date(date)]
+      dt[, "symbol" := symbol] # Use original IB symbol
 
       # Standardize column names
       dt <- standardize_ohlcv_columns(dt)

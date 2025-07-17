@@ -59,9 +59,8 @@ DataValidation <- S7::new_class(
   )
 )
 
-
-#' @export
-fetch_ohlcv.ProviderManager <- function(
+# S7 method for fetching OHLCV data using provider manager with failover
+S7::method(fetch_ohlcv, ProviderManager) <- function(
   provider,
   symbol,
   start_date,
@@ -87,8 +86,8 @@ fetch_ohlcv.ProviderManager <- function(
 
         # Convert to data.table for performance
         dt <- data.table::as.data.table(data, keep.rownames = "date")
-        dt[, date := as.Date(date)]
-        dt[, symbol := symbol]
+        dt[, "date" := as.Date(date)]
+        dt[, "symbol" := symbol]
 
         # Standardize column names for OHLCV data
         dt <- standardize_ohlcv_columns(dt)
@@ -330,7 +329,7 @@ process_ohlcv_fast <- function(
         sma_20 = frollmean(close, 20, na.rm = TRUE),
         sma_50 = frollmean(close, 50, na.rm = TRUE)
       ),
-      by = symbol
+      by = "symbol"
     ]
   }
 
@@ -342,7 +341,7 @@ process_ohlcv_fast <- function(
         volatility_20d = frollapply(log_return, 20, sd, na.rm = TRUE),
         atr_14 = frollmean(true_range, 14, na.rm = TRUE)
       ),
-      by = symbol
+      by = "symbol"
     ]
   }
 
@@ -360,7 +359,7 @@ process_ohlcv_fast <- function(
 #' @export
 aggregate_ohlcv <- function(dt, period = "weekly") {
   if (period == "weekly") {
-    dt[, week_year := paste(year(date), week(date), sep = "-")]
+    dt[, "week_year" := paste(year(date), week(date), sep = "-")]
     agg_dt <- dt[,
       .(
         date = max(date),
@@ -372,9 +371,9 @@ aggregate_ohlcv <- function(dt, period = "weekly") {
       ),
       by = .(symbol, week_year)
     ]
-    agg_dt[, week_year := NULL]
+    agg_dt[, "week_year" := NULL]
   } else if (period == "monthly") {
-    dt[, month_year := paste(year(date), month(date), sep = "-")]
+    dt[, "month_year" := paste(year(date), month(date), sep = "-")]
     agg_dt <- dt[,
       .(
         date = max(date),
@@ -386,7 +385,7 @@ aggregate_ohlcv <- function(dt, period = "weekly") {
       ),
       by = .(symbol, month_year)
     ]
-    agg_dt[, month_year := NULL]
+    agg_dt[, "month_year" := NULL]
   } else {
     # Return daily data as-is
     agg_dt <- dt

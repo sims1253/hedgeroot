@@ -404,4 +404,3 @@ get_cached_data <- function(provider_manager, symbol, start_date, end_date) {
     }
   )
 }
-

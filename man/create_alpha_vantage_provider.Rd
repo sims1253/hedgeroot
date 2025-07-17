@@ -4,10 +4,10 @@
 \alias{create_alpha_vantage_provider}
 \title{Create Alpha Vantage Provider}
 \usage{
-create_alpha_vantage_provider(api_key, rate_limit_per_minute = 5)
+create_alpha_vantage_provider(api_key = NULL, rate_limit_per_minute = 5)
 }
 \arguments{
-\item{api_key}{Alpha Vantage API key}
+\item{api_key}{Alpha Vantage API key (optional, will use ALPHAVANTAGE_API_KEY environment variable if not provided)}
 
 \item{rate_limit_per_minute}{Rate limit (default 5 for free tier)}
 }

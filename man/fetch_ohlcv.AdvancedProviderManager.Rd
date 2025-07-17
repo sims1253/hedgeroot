@@ -4,7 +4,13 @@
 \alias{fetch_ohlcv.AdvancedProviderManager}
 \title{Fetch OHLCV with Advanced Failover}
 \usage{
-\method{fetch_ohlcv}{AdvancedProviderManager}(provider, symbol, start_date, end_date, ...)
+fetch_ohlcv.AdvancedProviderManager(
+  provider,
+  symbol,
+  start_date,
+  end_date,
+  ...
+)
 }
 \arguments{
 \item{provider}{AdvancedProviderManager object}

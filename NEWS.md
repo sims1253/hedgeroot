@@ -1,3 +1,20 @@
+# hedgeroot 0.0.2.9000
+
+## API Token Management
+
+* Added `get_api_token()` function to retrieve API tokens from environment variables
+* Support for `ALPHAVANTAGE_API_KEY` environment variable
+* Better error messages when tokens are missing or empty
+* Fixed environment variable name consistency in documentation
+
+## Testing Improvements
+
+* Added `HEDGEROOT_ENABLE_API_TESTS` environment variable to control real API testing
+* Optimized integration tests to minimize API calls (reuse single API call per session)
+* Added helper functions `skip_if_api_testing_disabled()` and `skip_if_no_api_access()`
+* Tests now skip real API calls by default to conserve API quota
+* Added documentation for running tests with and without real API calls
+
 # hedgeroot 0.0.1.9000
 
 ## New Features

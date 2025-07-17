@@ -4,7 +4,7 @@
 \alias{fetch_ohlcv.IBProvider}
 \title{Fetch OHLCV Data from Interactive Brokers}
 \usage{
-\method{fetch_ohlcv}{IBProvider}(
+fetch_ohlcv.IBProvider(
   provider,
   symbol,
   start_date,

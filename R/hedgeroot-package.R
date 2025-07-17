@@ -12,22 +12,35 @@ NULL
 # Helper function for null coalescing
 `%||%` <- function(x, y) if (is.null(x) || length(x) == 0) y else x
 
-# Global variables for rlang/purrr functions (standalone)
+# Global variables for data.table NSE
 utils::globalVariables(c(
-  "as_function", "global_env", "is_logical", "is_true", "inject", "set_names"
+  # Column names used in data.table NSE contexts
+  "date",
+  "symbol",
+  "open",
+  "high",
+  "low",
+  "close",
+  "volume",
+  "typical_price",
+  "price_range",
+  "price_change",
+  "price_change_pct",
+  "log_close",
+  "log_return",
+  "volume_ma_5",
+  "volume_ratio",
+  "true_range",
+  "return_1d",
+  "return_5d",
+  "return_20d",
+  "sma_5",
+  "sma_10",
+  "sma_20",
+  "sma_50",
+  "volatility_5d",
+  "volatility_20d",
+  "atr_14",
+  "week_year",
+  "month_year"
 ))
-
-#' Fetch OHLCV Data
-#'
-#' Generic function to fetch OHLCV data from providers
-#'
-#' @param provider Provider object
-#' @param symbol Character symbol to fetch
-#' @param start_date Start date for data
-#' @param end_date End date for data
-#' @param ... Additional arguments
-#' @return data.table with OHLCV data
-#' @export
-fetch_ohlcv <- function(provider, symbol, start_date, end_date, ...) {
-  UseMethod("fetch_ohlcv")
-}

@@ -31,11 +31,27 @@ AlphaVantageProvider <- S7::new_class(
 #'
 #' Factory function to create AlphaVantageProvider objects
 #'
-#' @param api_key Alpha Vantage API key
+#' @param api_key Alpha Vantage API key (optional, will use ALPHAVANTAGE_API_KEY environment variable if not provided)
 #' @param rate_limit_per_minute Rate limit (default 5 for free tier)
 #' @return AlphaVantageProvider object
 #' @export
-create_alpha_vantage_provider <- function(api_key, rate_limit_per_minute = 5) {
+create_alpha_vantage_provider <- function(
+  api_key = NULL,
+  rate_limit_per_minute = 5
+) {
+  # Get API key from environment if not provided
+  if (is.null(api_key)) {
+    api_key <- get_api_token("alpha_vantage", required = TRUE)
+  } else {
+    # Validate provided API key
+    if (is.na(api_key) || trimws(api_key) == "") {
+      stop(
+        "Alpha Vantage API key cannot be empty. Please provide a valid API key or set the ALPHAVANTAGE_API_KEY environment variable."
+      )
+    }
+    api_key <- trimws(api_key)
+  }
+
   AlphaVantageProvider(
     name = "alpha_vantage",
     config = list(api_key = api_key),
@@ -49,19 +65,8 @@ create_alpha_vantage_provider <- function(api_key, rate_limit_per_minute = 5) {
   )
 }
 
-#' Fetch OHLCV Data from Alpha Vantage
-#'
-#' @param provider AlphaVantageProvider object
-#' @param symbol Character symbol to fetch
-#' @param start_date Start date for data
-#' @param end_date End date for data
-#' @param outputsize Character output size ("compact" or "full", default "full")
-#' @param ... Additional arguments passed to underlying functions
-#' @return data.table with OHLCV data
-#' @importFrom httr GET content
-#' @importFrom jsonlite fromJSON
-#' @export
-fetch_ohlcv.AlphaVantageProvider <- function(
+# S7 method for fetching OHLCV data from Alpha Vantage
+S7::method(fetch_ohlcv, AlphaVantageProvider) <- function(
   provider,
   symbol,
   start_date,
@@ -116,17 +121,36 @@ fetch_ohlcv.AlphaVantageProvider <- function(
 
       # Check for API errors
       if ("Error Message" %in% names(data)) {
-        stop("Alpha Vantage API error: ", data$`Error Message`)
+        stop("Alpha Vantage API error: ", data[["Error Message"]])
       }
 
       if ("Note" %in% names(data)) {
         warning("Alpha Vantage API note: ", data$Note)
       }
 
-      # Extract time series data
-      time_series_key <- "Time Series (Daily)"
-      if (!time_series_key %in% names(data)) {
-        stop("Unexpected Alpha Vantage response format")
+      # Extract time series data - check for multiple possible keys
+      possible_keys <- c(
+        "Time Series (Daily)",
+        "Time Series (Daily Adjusted)",
+        "Daily Time Series",
+        "Daily Adjusted Time Series"
+      )
+
+      time_series_key <- NULL
+      for (key in possible_keys) {
+        if (key %in% names(data)) {
+          time_series_key <- key
+          break
+        }
+      }
+
+      if (is.null(time_series_key)) {
+        # Debug: show available keys
+        available_keys <- names(data)
+        stop(paste(
+          "Unexpected Alpha Vantage response format. Available keys:",
+          paste(available_keys, collapse = ", ")
+        ))
       }
 
       time_series <- data[[time_series_key]]
@@ -134,16 +158,33 @@ fetch_ohlcv.AlphaVantageProvider <- function(
       # Convert to data.table
       dates <- as.Date(names(time_series))
 
+      # Extract OHLCV data with error handling
+      extract_field <- function(field_name) {
+        tryCatch(
+          {
+            values <- sapply(time_series, function(x) {
+              if (is.list(x) && field_name %in% names(x)) {
+                as.numeric(x[[field_name]])
+              } else {
+                NA_real_
+              }
+            })
+            as.numeric(values)
+          },
+          error = function(e) {
+            rep(NA_real_, length(time_series))
+          }
+        )
+      }
+
       dt <- data.table::data.table(
         date = dates,
-        open = as.numeric(sapply(time_series, function(x) x$`1. open`)),
-        high = as.numeric(sapply(time_series, function(x) x$`2. high`)),
-        low = as.numeric(sapply(time_series, function(x) x$`3. low`)),
-        close = as.numeric(sapply(time_series, function(x) x$`4. close`)),
-        adjusted = as.numeric(sapply(time_series, function(x) {
-          x$`5. adjusted close`
-        })),
-        volume = as.numeric(sapply(time_series, function(x) x$`6. volume`)),
+        open = extract_field("1. open"),
+        high = extract_field("2. high"),
+        low = extract_field("3. low"),
+        close = extract_field("4. close"),
+        adjusted = extract_field("5. adjusted close"),
+        volume = extract_field("6. volume"),
         symbol = symbol
       )
 
