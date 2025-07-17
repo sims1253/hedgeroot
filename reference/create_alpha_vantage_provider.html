@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hedgeroot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_alpha_vantage_provider</span><span class="op">(</span><span class="va">api_key</span>, rate_limit_per_minute <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_alpha_vantage_provider</span><span class="op">(</span>api_key <span class="op">=</span> <span class="cn">NULL</span>, rate_limit_per_minute <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -47,7 +47,7 @@
 
 
 <dl><dt id="arg-api-key">api_key<a class="anchor" aria-label="anchor" href="#arg-api-key"></a></dt>
-<dd><p>Alpha Vantage API key</p></dd>
+<dd><p>Alpha Vantage API key (optional, will use ALPHAVANTAGE_API_KEY environment variable if not provided)</p></dd>
 
 
 <dt id="arg-rate-limit-per-minute">rate_limit_per_minute<a class="anchor" aria-label="anchor" href="#arg-rate-limit-per-minute"></a></dt>

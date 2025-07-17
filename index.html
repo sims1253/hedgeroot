@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">hedgeroot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,21 +51,16 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>HedgeRoot is the data management foundation for the Hedgerow trading system. It provides a robust, production-ready data infrastructure package that handles high-performance data fetching, validation, storage, and management capabilities for financial data.</p>
+<p>hedgeroot is a data management package for financial data. It handles data fetching, validation, and storage with support for multiple data providers.</p>
 <div class="section level2">
-<h2 id="key-features">Key Features<a class="anchor" aria-label="anchor" href="#key-features"></a>
+<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h2>
 <ul>
-<li>
-<strong>Multi-Source Data Integration</strong>: Support for Alpha Vantage, Interactive Brokers, and Yahoo Finance</li>
-<li>
-<strong>Advanced Provider Management</strong>: Intelligent failover with circuit breakers and health monitoring</li>
-<li>
-<strong>High-Performance Architecture</strong>: Leverages data.table for optimal performance</li>
-<li>
-<strong>Comprehensive Data Validation</strong>: Built-in quality control and anomaly detection</li>
-<li>
-<strong>S7 Object System</strong>: Modern, type-safe data structures</li>
+<li>Multi-source data integration (Alpha Vantage, Interactive Brokers)</li>
+<li>Provider failover with circuit breakers and health monitoring</li>
+<li>Built on data.table for performance</li>
+<li>Data validation with quality scoring and anomaly detection</li>
+<li>S7 object system for type safety</li>
 </ul>
 </div>
 <div class="section level2">
@@ -73,10 +68,67 @@
 </h2>
 <p>You can install the development version of hedgeroot from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sims1253/hedgeroot"</span><span class="op">)</span></span></code></pre></div>
-<p>or</p>
+<code class="sourceCode R"><span><span class="co"># Install devtools if you haven't already</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install hedgeroot</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sims1253/hedgeroot"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="api-token-setup">API Token Setup<a class="anchor" aria-label="anchor" href="#api-token-setup"></a>
+</h2>
+<p>To use hedgeroot with real market data, you’ll need to set up API tokens for your chosen data providers. The package uses environment variables to securely manage these credentials.</p>
+<div class="section level3">
+<h3 id="alpha-vantage-api-key">Alpha Vantage API Key<a class="anchor" aria-label="anchor" href="#alpha-vantage-api-key"></a>
+</h3>
+<p>Alpha Vantage provides free and premium financial data. To get started:</p>
+<ol style="list-style-type: decimal">
+<li>Sign up for a free API key at <a href="https://www.alphavantage.co/support/#api-key" class="external-link">Alpha Vantage</a>
+</li>
+<li>Set the <code>ALPHAVANTAGE_API_KEY</code> environment variable using one of the methods below</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="free-tier-limitations">Free Tier Limitations<a class="anchor" aria-label="anchor" href="#free-tier-limitations"></a>
+</h3>
+<p><strong>Alpha Vantage Free Tier:</strong></p>
+<ul>
+<li>5 API requests per minute</li>
+<li>25 API requests per day</li>
+<li>Unadjusted daily or intraday time series data only</li>
+<li>No real-time intraday data</li>
+</ul>
+<p>The package automatically respects these rate limits. For higher usage, consider upgrading to Alpha Vantage’s premium tiers.</p>
+</div>
+<div class="section level3">
+<h3 id="verifying-setup">Verifying Setup<a class="anchor" aria-label="anchor" href="#verifying-setup"></a>
+</h3>
+<p>Test your API token setup:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"sims1253/hedgeroot"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sims1253/hedgeroot" class="external-link">hedgeroot</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># This will use your environment variable automatically</span></span>
+<span><span class="va">provider</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_alpha_vantage_provider.html">create_alpha_vantage_provider</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Test with a simple data fetch</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_ohlcv.html">fetch_ohlcv</a></span><span class="op">(</span><span class="va">provider</span>, <span class="st">"AAPL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">30</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="testing-with-real-apis">Testing with Real APIs<a class="anchor" aria-label="anchor" href="#testing-with-real-apis"></a>
+</h3>
+<p>The package includes integration tests that make real API calls. To conserve your API quota:</p>
+<p><strong>Default behavior (recommended):</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Tests skip real API calls by default</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">testthat::test_dir</span><span class="er">(</span><span class="st">"tests/testthat"</span><span class="kw">)</span></span></code></pre></div>
+<p><strong>Enable real API testing:</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Set both environment variables to enable real API calls</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">ALPHAVANTAGE_API_KEY</span><span class="op">=</span><span class="st">"your_api_key"</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">HEDGEROOT_ENABLE_API_TESTS</span><span class="op">=</span><span class="st">"true"</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co"># Run tests - will make real API calls (uses ~5 requests)</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="ex">testthat::test_dir</span><span class="er">(</span><span class="st">"tests/testthat"</span><span class="kw">)</span></span></code></pre></div>
+<p>The integration tests are optimized to minimize API usage, but will still consume several requests from your daily quota when enabled.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="basic-usage">Basic Usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
@@ -84,7 +136,7 @@
 <div class="section level3">
 <h3 id="simple-data-provider">Simple Data Provider<a class="anchor" aria-label="anchor" href="#simple-data-provider"></a>
 </h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sims1253/hedgeroot" class="external-link">hedgeroot</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a provider</span></span>
@@ -96,7 +148,7 @@
 <div class="section level3">
 <h3 id="advanced-provider-management">Advanced Provider Management<a class="anchor" aria-label="anchor" href="#advanced-provider-management"></a>
 </h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create multiple providers with failover</span></span>
 <span><span class="va">providers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="reference/create_alpha_vantage_provider.html">create_alpha_vantage_provider</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="st">"your_av_key"</span><span class="op">)</span>,</span>
@@ -117,7 +169,7 @@
 <div class="section level3">
 <h3 id="data-validation">Data Validation<a class="anchor" aria-label="anchor" href="#data-validation"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Validate fetched data</span></span>
 <span><span class="va">validation</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/validate_data.html">validate_data</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span></span>
@@ -135,15 +187,13 @@
 <div class="section level3">
 <h3 id="provider-system">Provider System<a class="anchor" aria-label="anchor" href="#provider-system"></a>
 </h3>
-<p>HedgeRoot uses a modular provider system supporting:</p>
+<p>hedgeroot uses a modular provider system supporting:</p>
 <ul>
 <li>
 <strong>Alpha Vantage</strong>: Free and paid tiers for equity and forex data</li>
 <li>
 <strong>Interactive Brokers</strong>: Professional trading platform integration<br>
 </li>
-<li>
-<strong>Yahoo Finance</strong>: Free equity data through quantmod</li>
 <li>
 <strong>Custom Providers</strong>: Extensible architecture for new data sources</li>
 </ul>
@@ -169,13 +219,13 @@
 <div class="section level3">
 <h3 id="environment-variables">Environment Variables<a class="anchor" aria-label="anchor" href="#environment-variables"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Alpha Vantage API key</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">ALPHA_VANTAGE_API_KEY</span><span class="op">=</span><span class="st">"your_api_key"</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># IB Gateway settings</span></span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="bu">export</span> <span class="va">IB_HOST</span><span class="op">=</span><span class="st">"127.0.0.1"</span></span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="bu">export</span> <span class="va">IB_PORT</span><span class="op">=</span><span class="st">"7497"</span></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="bu">export</span> <span class="va">IB_CLIENT_ID</span><span class="op">=</span><span class="st">"1"</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Alpha Vantage API key</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">ALPHAVANTAGE_API_KEY</span><span class="op">=</span><span class="st">"your_api_key"</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co"># IB Gateway settings</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="bu">export</span> <span class="va">IB_HOST</span><span class="op">=</span><span class="st">"127.0.0.1"</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="bu">export</span> <span class="va">IB_PORT</span><span class="op">=</span><span class="st">"7497"</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="bu">export</span> <span class="va">IB_CLIENT_ID</span><span class="op">=</span><span class="st">"1"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hedgeroot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +32,25 @@
       <small>Source: <a href="https://github.com/sims1253/hedgeroot/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.2.9000" id="hedgeroot-0029000">hedgeroot 0.0.2.9000<a class="anchor" aria-label="anchor" href="#hedgeroot-0029000"></a></h2>
+<div class="section level3">
+<h3 id="api-token-management-0-0-2-9000">API Token Management<a class="anchor" aria-label="anchor" href="#api-token-management-0-0-2-9000"></a></h3>
+<ul><li>Added <code><a href="../reference/get_api_token.html">get_api_token()</a></code> function to retrieve API tokens from environment variables</li>
+<li>Support for <code>ALPHAVANTAGE_API_KEY</code> environment variable</li>
+<li>Better error messages when tokens are missing or empty</li>
+<li>Fixed environment variable name consistency in documentation</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-improvements-0-0-2-9000">Testing Improvements<a class="anchor" aria-label="anchor" href="#testing-improvements-0-0-2-9000"></a></h3>
+<ul><li>Added <code>HEDGEROOT_ENABLE_API_TESTS</code> environment variable to control real API testing</li>
+<li>Optimized integration tests to minimize API calls (reuse single API call per session)</li>
+<li>Added helper functions <code>skip_if_api_testing_disabled()</code> and <code>skip_if_no_api_access()</code>
+</li>
+<li>Tests now skip real API calls by default to conserve API quota</li>
+<li>Added documentation for running tests with and without real API calls</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.1.9000" id="hedgeroot-0019000">hedgeroot 0.0.1.9000<a class="anchor" aria-label="anchor" href="#hedgeroot-0019000"></a></h2>
 <div class="section level3">

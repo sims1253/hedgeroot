@@ -20,10 +20,10 @@
 <url><loc>https://sims1253.github.io/hedgeroot/reference/detect_anomalies.html</loc></url>
 <url><loc>https://sims1253.github.io/hedgeroot/reference/disconnect_ib.html</loc></url>
 <url><loc>https://sims1253.github.io/hedgeroot/reference/fetch_ohlcv.AdvancedProviderManager.html</loc></url>
-<url><loc>https://sims1253.github.io/hedgeroot/reference/fetch_ohlcv.AlphaVantageProvider.html</loc></url>
 <url><loc>https://sims1253.github.io/hedgeroot/reference/fetch_ohlcv.IBProvider.html</loc></url>
 <url><loc>https://sims1253.github.io/hedgeroot/reference/fetch_ohlcv.html</loc></url>
 <url><loc>https://sims1253.github.io/hedgeroot/reference/fetch_with_retry.html</loc></url>
+<url><loc>https://sims1253.github.io/hedgeroot/reference/get_api_token.html</loc></url>
 <url><loc>https://sims1253.github.io/hedgeroot/reference/get_cached_data.html</loc></url>
 <url><loc>https://sims1253.github.io/hedgeroot/reference/get_ib_contract_details.html</loc></url>
 <url><loc>https://sims1253.github.io/hedgeroot/reference/get_provider_by_name.html</loc></url>
