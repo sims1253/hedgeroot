@@ -1,0 +1,139 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# hedgeroot
+
+<!-- badges: start -->
+
+[![License](https://img.shields.io/badge/License-AGPL--3-blue.svg)](LICENSE)
+[![R-CMD-check](https://github.com/sims1253/hedgeroot/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sims1253/hedgeroot/actions/workflows/R-CMD-check.yaml)
+[![Tests](https://github.com/sims1253/hedgeroot/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/sims1253/hedgeroot/actions/workflows/test-coverage.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/sims1253/hedgeroot/graph/badge.svg)](https://app.codecov.io/gh/sims1253/hedgeroot)
+[![GH-Pages](https://github.com/sims1253/hedgeroot/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/sims1253/hedgeroot/actions/workflows/pkgdown.yaml)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+<!-- badges: end -->
+
+HedgeRoot is the data management foundation for the Hedgerow trading
+system. It provides a robust, production-ready data infrastructure
+package that handles high-performance data fetching, validation,
+storage, and management capabilities for financial data.
+
+## Key Features
+
+- **Multi-Source Data Integration**: Support for Alpha Vantage,
+  Interactive Brokers, and Yahoo Finance
+- **Advanced Provider Management**: Intelligent failover with circuit
+  breakers and health monitoring
+- **High-Performance Architecture**: Leverages data.table for optimal
+  performance
+- **Comprehensive Data Validation**: Built-in quality control and
+  anomaly detection
+- **S7 Object System**: Modern, type-safe data structures
+
+## Installation
+
+You can install the development version of hedgeroot from GitHub:
+
+``` r
+devtools::install_github("sims1253/hedgeroot")
+```
+or
+``` r
+pak::pak("sims1253/hedgeroot")
+```
+
+## Basic Usage
+
+### Simple Data Provider
+
+``` r
+library(hedgeroot)
+
+# Create a provider
+provider <- create_alpha_vantage_provider(api_key = "your_api_key")
+
+# Fetch OHLCV data
+data <- fetch_ohlcv(provider, "AAPL", "2023-01-01", "2023-12-31")
+```
+
+### Advanced Provider Management
+
+``` r
+# Create multiple providers with failover
+providers <- list(
+  create_alpha_vantage_provider(api_key = "your_av_key"),
+  create_ib_provider(host = "127.0.0.1", port = 7497)
+)
+
+# Create advanced manager with circuit breaker
+manager <- create_advanced_provider_manager(
+  providers = providers,
+  failover_strategy = "priority",
+  circuit_breaker_threshold = 3,
+  circuit_breaker_window = 15
+)
+
+# Fetch data with automatic failover
+data <- fetch_ohlcv(manager, "AAPL", "2023-01-01", "2023-12-31")
+```
+
+### Data Validation
+
+``` r
+# Validate fetched data
+validation <- validate_data(data)
+
+# Check validation results
+if (validation@is_valid) {
+  cat("Data quality score:", validation@quality_score, "\n")
+} else {
+  cat("Validation errors:", validation@errors, "\n")
+}
+```
+
+## Architecture
+
+### Provider System
+
+HedgeRoot uses a modular provider system supporting:
+
+- **Alpha Vantage**: Free and paid tiers for equity and forex data
+- **Interactive Brokers**: Professional trading platform integration  
+- **Yahoo Finance**: Free equity data through quantmod
+- **Custom Providers**: Extensible architecture for new data sources
+
+### Failover Strategy
+
+- **Priority-based**: Providers tried in order of priority
+- **Health-based**: Providers selected based on historical performance
+- **Circuit Breaker**: Failing providers temporarily disabled
+- **Automatic Recovery**: Providers re-enabled after cooldown period
+
+## Configuration
+
+### Environment Variables
+
+``` bash
+# Alpha Vantage API key
+export ALPHA_VANTAGE_API_KEY="your_api_key"
+
+# IB Gateway settings
+export IB_HOST="127.0.0.1"
+export IB_PORT="7497"
+export IB_CLIENT_ID="1"
+```
+
+## Contributing
+
+1.  Fork the repository
+2.  Create a feature branch
+3.  Make your changes with tests
+4.  Ensure all tests pass with `devtools::check()`
+5.  Submit a pull request
+
+## License
+
+This project is licensed under the AGPL-3 License. See the LICENSE file
+for details.
