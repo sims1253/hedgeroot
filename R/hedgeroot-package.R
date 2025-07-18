@@ -42,5 +42,7 @@ utils::globalVariables(c(
   "volatility_20d",
   "atr_14",
   "week_year",
-  "month_year"
+  "month_year",
+  # data.table functions
+  "."
 ))

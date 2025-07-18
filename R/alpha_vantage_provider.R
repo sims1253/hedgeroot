@@ -11,6 +11,8 @@
 #' @param base_url Character base URL for Alpha Vantage API
 #' @param rate_limit_per_minute Numeric rate limit per minute
 #' @param last_request_time Last request timestamp
+#' @importFrom httr GET content
+#' @importFrom jsonlite fromJSON
 #' @export
 AlphaVantageProvider <- S7::new_class(
   "AlphaVantageProvider",

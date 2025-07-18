@@ -9,13 +9,7 @@ fetch_ohlcv(provider, ...)
 \arguments{
 \item{provider}{Data provider object}
 
-\item{...}{Additional arguments passed to provider-specific methods}
-
-\item{symbol}{Character symbol to fetch}
-
-\item{start_date}{Start date for data}
-
-\item{end_date}{End date for data}
+\item{...}{Arguments passed to provider-specific methods (typically symbol, start_date, end_date)}
 }
 \value{
 data.table with OHLCV data
@@ -26,5 +20,7 @@ to ensure they are available before methods are defined.
 Fetch OHLCV Data Generic Function
 }
 \details{
-S7 generic function for fetching OHLCV data from different providers
+S7 generic function for fetching OHLCV data from different providers.
+The specific arguments (symbol, start_date, end_date, etc.) are passed
+through ... and documented in the individual method implementations.
 }

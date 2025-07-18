@@ -5,13 +5,12 @@
 
 #' Fetch OHLCV Data Generic Function
 #'
-#' S7 generic function for fetching OHLCV data from different providers
+#' S7 generic function for fetching OHLCV data from different providers.
+#' The specific arguments (symbol, start_date, end_date, etc.) are passed 
+#' through ... and documented in the individual method implementations.
 #'
 #' @param provider Data provider object
-#' @param symbol Character symbol to fetch
-#' @param start_date Start date for data
-#' @param end_date End date for data
-#' @param ... Additional arguments passed to provider-specific methods
+#' @param ... Arguments passed to provider-specific methods (typically symbol, start_date, end_date)
 #' @return data.table with OHLCV data
 #' @export
 fetch_ohlcv <- S7::new_generic("fetch_ohlcv", "provider")
